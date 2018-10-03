@@ -89,7 +89,6 @@ class Board {
     }
 
     clearCell(x, y) {
-        console.log(x, y);
         this.cells[x][y].number = null;
         this.cells[x][y].isFixed = false;
     }

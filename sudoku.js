@@ -68,7 +68,8 @@ class Sudoku {
 
     addListeners() {
         this.canvas.addEventListener('click', (e) => {
-            this.activeCell = this.getPosition(e.x, e.y);
+            console.log(e);
+            this.activeCell = this.getPosition(e.pageX, e.pageY);
 
             this.activeCellEvent();
 
@@ -205,7 +206,6 @@ class Sudoku {
         for (let i in colors) {
             if(colors.hasOwnProperty(i)) {
                 const color = colors[i];
-                console.log(i, color);
                 gradient.addColorStop(i / (colors.length - 1), color);
             }
         }
@@ -214,8 +214,12 @@ class Sudoku {
     }
 
     getPosition(mouseX, mouseY) {
-        const x = Math.floor(mouseX / this.cellSize);
-        const y = Math.floor(mouseY / this.cellSize);
+        let x = Math.floor(mouseX / this.cellSize);
+        let y = Math.floor(mouseY / this.cellSize);
+
+        x = Math.min(x, 8);
+        y = Math.min(y, 8);
+
         return {x: x, y: y};
     }
 }
