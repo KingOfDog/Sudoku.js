@@ -9,5 +9,5 @@
 .cursor {
     position: absolute;
     border: 6px solid yellow;
-    transition: margin .2s;
+    transition: margin .1s;
 }
