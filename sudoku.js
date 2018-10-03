@@ -7,6 +7,8 @@ class Sudoku {
         this.cellSize = 100;
         this.activeCell = {x: 0, y: 0};
 
+        this.cursor = new Cursor(this.cellSize);
+
         this.colors = [
             "#ff0055", "#FF2A2B", "#ff5400", "#FFAA00", "#ffff00", "#80E600", "#00cc00", "#00E680", "#00ffff"
         ];
@@ -17,7 +19,8 @@ class Sudoku {
         this.board.shuffle();
         this.board.clearCells();
         this.draw();
-        this.addListeners()
+        this.addListeners();
+
     }
 
     activeCellEvent() {
@@ -80,9 +83,10 @@ class Sudoku {
     }
 
     drawActiveCell() {
-        this.ctx.strokeStyle = 'yellow';
-        this.ctx.lineWidth = 5;
-        this.ctx.strokeRect(this.activeCell.x * this.cellSize, this.activeCell.y * this.cellSize, this.cellSize, this.cellSize);
+        // this.ctx.strokeStyle = 'yellow';
+        // this.ctx.lineWidth = 5;
+        // this.ctx.strokeRect(this.activeCell.x * this.cellSize, this.activeCell.y * this.cellSize, this.cellSize, this.cellSize);
+        this.cursor.setPosition(this.activeCell.x, this.activeCell.y);
     }
 
     drawMistakes() {

@@ -1,0 +1,13 @@
+.sudokuContainer {
+    position: relative;
+}
+
+#sudoku {
+    position: absolute;
+}
+
+.cursor {
+    position: absolute;
+    border: 6px solid yellow;
+    transition: margin .2s;
+}
