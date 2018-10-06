@@ -12,11 +12,14 @@ class Cell {
         return this.element;
     }
 
-    setActive(isActive) {
-        if(isActive)
+    setActive(isActive, activeBackground) {
+        if(isActive) {
             this.element.classList.add('active');
-        else
+            this.element.style.backgroundImage = activeBackground;
+        } else {
             this.element.classList.remove('active');
+            this.element.style.backgroundImage = "";
+        }
     }
 
     setFixed(isFixed) {

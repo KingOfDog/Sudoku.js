@@ -5,6 +5,45 @@ class Board {
         this.cells = [];
 
         this.cellContainer = document.getElementsByClassName('sudokuCells')[0];
+
+        this.styles = {
+            1: {
+                colors: ["#f80759", "#bc4e9c"],
+                textColor: '#fff',
+            },
+            2: {
+                colors: ["#fe8c00", "#f83600"],
+                textColor: '#fff',
+            },
+            3: {
+                colors: ["#F4D03F", "#16A085"],
+                textColor: '#fff',
+            },
+            4: {
+                colors: ["#00C9FF", "#92FE9D"],
+                textColor: '#fff',
+            },
+            5: {
+                colors: ["#FDFC47", "#24FE41"],
+                textColor: '#fff',
+            },
+            6: {
+                colors: ["#00F260", "#0575E6"],
+                textColor: '#fff',
+            },
+            7: {
+                colors: ["#00d2ff", "#3a7bd5"],
+                textColor: '#fff',
+            },
+            8: {
+                colors: ["#FFAF7B", "#D76D77", "#3A1C71"],
+                textColor: '#fff',
+            },
+            9: {
+                colors: ["#3F5EFB", "#FC466B"],
+                textColor: '#fff',
+            },
+        };
     }
 
     init() {
@@ -160,13 +199,28 @@ class Board {
 
     updateCells(activeCell) {
         const activeValue = this.getCellValue(activeCell);
+
+        const gradientColors = activeValue !== null ? this.styles[activeValue].colors : [];
+        const gradientHTML = `linear-gradient(135deg${generateHtmlGradient(gradientColors)})`;
+
         for(let x = 0; x < this.size; x++) {
             for(let y = 0; y < this.size; y++) {
-                this.cells[x][y].setActive(activeValue !== null && this.cells[x][y].number === activeValue);
+                const isActive = activeValue !== null && this.cells[x][y].number === activeValue;
+                this.cells[x][y].setActive(isActive, gradientHTML);
             }
         }
     }
 
+}
+
+function generateHtmlGradient(colors) {
+    let result = "";
+
+    for(let color of colors) {
+        result += ", " + color;
+    }
+
+    return result;
 }
 
 function ranInt(min, max) {

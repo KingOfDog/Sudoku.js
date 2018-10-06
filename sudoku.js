@@ -7,45 +7,6 @@ class Sudoku {
         this.cellSize = (window.innerWidth - 27) / 9;
 
         this.cursor = new Cursor(this.cellSize);
-
-        this.styles = {
-            1: {
-                colors: ["#f80759", "#bc4e9c"],
-                textColor: '#fff',
-            },
-            2: {
-                colors: ["#fe8c00", "#f83600"],
-                textColor: '#fff',
-            },
-            3: {
-                colors: ["#F4D03F", "#16A085"],
-                textColor: '#fff',
-            },
-            4: {
-                colors: ["#00C9FF", "#92FE9D"],
-                textColor: '#fff',
-            },
-            5: {
-                colors: ["#FDFC47", "#24FE41"],
-                textColor: '#fff',
-            },
-            6: {
-                colors: ["#00F260", "#0575E6"],
-                textColor: '#fff',
-            },
-            7: {
-                colors: ["#00d2ff", "#3a7bd5"],
-                textColor: '#fff',
-            },
-            8: {
-                colors: ["#FFAF7B", "#D76D77", "#3A1C71"],
-                textColor: '#fff',
-            },
-            9: {
-                colors: ["#3F5EFB", "#FC466B"],
-                textColor: '#fff',
-            },
-        }
     }
 
     init() {
@@ -93,21 +54,6 @@ class Sudoku {
         });
 
         window.addEventListener('resize', this.windowResizeEvent());
-    }
-
-    // TODO: Implement different gradients for active cells in HTML/CSS
-    getStyle(x, y) {
-        const activeCellNumber = this.board.getCellValue(this.activeCell);
-        const colors = this.styles[activeCellNumber].colors;
-        const gradient = this.ctx.createLinearGradient(x * this.cellSize, y * this.cellSize, (x + 1) * this.cellSize, (y + 1) * this.cellSize);
-        for (let i in colors) {
-            if(colors.hasOwnProperty(i)) {
-                const color = colors[i];
-                gradient.addColorStop(i / (colors.length - 1), color);
-            }
-        }
-
-        return gradient;
     }
 
     getPosition(mouseX, mouseY) {
