@@ -3,6 +3,8 @@ class Board {
         this.size = size;
         this.blockSize = Math.floor(this.size / blockCount);
         this.cells = [];
+
+        this.cellContainer = document.getElementsByClassName('sudokuCells')[0];
     }
 
     init() {
@@ -12,7 +14,7 @@ class Board {
             this.cells.push([]);
 
             for (let y = 0; y < this.size; y++) {
-                this.cells[x][y] = {number: number + 1, isFixed: true};
+                this.cells[x][y] = new Cell(number + 1);
                 number = (number + 1) % this.size;
             }
 
@@ -25,15 +27,11 @@ class Board {
     }
 
     checkValidity() {
-        const errorCells = [];
         for (let x = 0; x < 9; x++) {
             for (let y = 0; y < 9; y++) {
-                if (!this.cells[x][y].isFixed && !this.checkCellValidity(x, y)) {
-                    errorCells.push({x: x, y: y});
-                }
+                this.cells[x][y].setMistake(!this.cells[x][y].isFixed && !this.checkCellValidity(x, y));
             }
         }
-        return errorCells;
     }
 
     checkCellValidity(cellX, cellY) {
@@ -89,13 +87,24 @@ class Board {
     }
 
     clearCell(x, y) {
-        this.cells[x][y].number = null;
-        this.cells[x][y].isFixed = false;
+        this.cells[x][y].setNumber(null);
+        this.cells[x][y].setFixed(false);
+    }
+
+    createCellElements() {
+        for(let y = 0; y < this.size; y++) {
+            for(let x = 0; x < this.size; x++) {
+                this.cellContainer.appendChild(this.cells[x][y].createElement());
+                this.cells[x][y].setFixed(true);
+            }
+        }
     }
 
     enterNumber(x, y, number) {
-        if (!this.cells[x][y].isFixed)
-            this.cells[x][y].number = number;
+        if (!this.cells[x][y].isFixed) {
+            this.cells[x][y].setNumber(number);
+            this.checkValidity();
+        }
     }
 
     getCellValue(cell) {
@@ -147,6 +156,15 @@ class Board {
 
     shuffleCol(col1, col2) {
         [this.cells[col1], this.cells[col2]] = [this.cells[col2], this.cells[col1]];
+    }
+
+    updateCells(activeCell) {
+        const activeValue = this.getCellValue(activeCell);
+        for(let x = 0; x < this.size; x++) {
+            for(let y = 0; y < this.size; y++) {
+                this.cells[x][y].setActive(activeValue !== null && this.cells[x][y].number === activeValue);
+            }
+        }
     }
 
 }

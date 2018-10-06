@@ -1,13 +1,13 @@
 class Cursor {
     constructor(cellSize) {
         this.cursorElement = document.getElementsByClassName('cursor')[0];
-        this.cursorElement.style.width = this.cursorElement.style.height = cellSize - 6 + "px";
-
         this.cellSize = cellSize;
+        this.pos = {x: 0, y: 0};
     }
 
     setPosition(x, y) {
-        this.cursorElement.style.marginLeft = (x * this.cellSize) - 3 + "px";
-        this.cursorElement.style.marginTop = (y * this.cellSize) - 3 + "px";
+        this.pos = {x: x, y: y};
+        this.cursorElement.style.marginLeft = (x * this.cellSize) + "px";
+        this.cursorElement.style.marginTop = (y * this.cellSize) + "px";
     }
 }

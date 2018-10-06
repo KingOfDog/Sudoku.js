@@ -1,13 +1,113 @@
 .sudokuContainer {
     position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    max-width: 66vw;
 }
 
 #sudoku {
     position: absolute;
+    width: 100%;
+}
+
+.sudokuCells {
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+}
+
+.sudokuCells > .cell {
+    position: relative;
+    width: calc((100% - 27px) / 9);
+    border: 1px solid black;
+    transition: background-color .1s;
+}
+
+.sudokuCells > .cell:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+.sudokuCells > .cell:nth-child(3n):not(:nth-child(9n)) {
+    border-right: 3px solid black;
+}
+
+.sudokuCells > .cell:nth-child(3n + 1):not(:nth-child(9n + 1)) {
+    border-left: 3px solid black;
+}
+
+.sudokuCells > .cell:nth-child(n + 19):nth-child(-n + 27),
+.sudokuCells > .cell:nth-child(n + 46):nth-child(-n + 54) {
+    border-bottom: 3px solid black;
+}
+
+.sudokuCells > .cell:nth-child(n + 28):nth-child(-n + 36),
+.sudokuCells > .cell:nth-child(n + 55):nth-child(-n + 63) {
+    border-top: 3px solid black;
+}
+
+.sudokuCells > .cell > h1 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    font-size: 40px;
+    font-family: Roboto, Arial, sans-serif;
+    font-weight: 100;
+    z-index: 2;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.sudokuCells > .cell.is-fixed {
+    background-color: #ddd;
+}
+
+.sudukuCells > .cell.has-mistake > h1 {
+    color: #fff;
+}
+
+.sudokuCells > .cell.has-mistake:after {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #F72754;
+    border-radius: 100%;
+    z-index: 1;
+}
+
+.sudokuCells > .cell.active {
+    background-color: #2272ff;
+}
+
+.sudokuCells > .cell.active > h1 {
+    color: #fff;
 }
 
 .cursor {
     position: absolute;
-    border: 6px solid yellow;
+    top: -5px;
+    left: -5px;
+    width: calc((100% - 27px) / 9 + 12px);
+    border: 10px solid yellow;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     transition: margin .1s;
+}
+
+.cursor:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
 }
