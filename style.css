@@ -21,7 +21,7 @@
     position: relative;
     width: calc((100% - 27px) / 9);
     border: 1px solid black;
-    transition: background-color .1s;
+    transition: background-color .1s, color .1s;
 }
 
 .sudokuCells > .cell:before {
@@ -110,4 +110,32 @@
     content: "";
     display: block;
     padding-top: 100%;
+}
+
+.sudokuInput {
+    width: 50px;
+    height: 50px;
+    margin: 10px 15px;
+    color: #fff;
+    background-color: #2272ff;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    -webkit-transition: all .1s;
+    -moz-transition: all .1s;
+    -ms-transition: all .1s;
+    -o-transition: all .1s;
+    transition: all .1s;
+}
+
+.sudokuInput:not(.disabled):hover {
+    box-shadow: 0 0 5px rgba(0,0,0,.5);
+    transform: scale(1.25);
+}
+
+.sudokuInput.disabled {
+    color: #333;
+    background-color: #eee;
+    cursor: default;
 }

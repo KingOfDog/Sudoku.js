@@ -21,11 +21,11 @@ class Board {
             },
             4: {
                 colors: ["#00C9FF", "#92FE9D"],
-                textColor: '#fff',
+                textColor: '#333',
             },
             5: {
                 colors: ["#FDFC47", "#24FE41"],
-                textColor: '#fff',
+                textColor: '#333',
             },
             6: {
                 colors: ["#00F260", "#0575E6"],
@@ -128,6 +128,7 @@ class Board {
     clearCell(x, y) {
         this.cells[x][y].setNumber(null);
         this.cells[x][y].setFixed(false);
+        this.checkValidity();
     }
 
     createCellElements() {
@@ -140,14 +141,66 @@ class Board {
     }
 
     enterNumber(x, y, number) {
+        console.log(x, y, number);
         if (!this.cells[x][y].isFixed) {
             this.cells[x][y].setNumber(number);
             this.checkValidity();
         }
     }
 
+    getAllowedValues(pos) {
+        // Array of all allowed values
+        let allowedValues = [];
+
+        // Add all possible numbers in general to the array
+        for(let i = 1; i <= this.size; i++) {
+            allowedValues.push(i);
+        }
+
+        // Check for already used values in the same row
+        for (let x = 0; x < this.size; x++) {
+            if(x === pos.x)
+                continue;
+
+            allowedValues = removeElementFromArray(allowedValues, this.cells[x][pos.y].number);
+        }
+
+        // Check for already used values in the same column
+        for(let y = 0; y < this.size; y++) {
+            if(y === pos.y)
+                continue;
+
+            allowedValues = removeElementFromArray(allowedValues, this.cells[pos.x][y].number);
+        }
+
+        // Check for already used values in the same block
+        const blockX = Math.floor(pos.x / this.blockSize);
+        const blockY = Math.floor(pos.y / this.blockSize);
+        for (let innerX = 0; innerX < 3; innerX++) {
+            for (let innerY = 0; innerY < 3; innerY++) {
+                const x = blockX * this.blockSize + innerX;
+                const y = blockY * this.blockSize + innerY;
+
+                if (x === pos.x && y === pos.y)
+                    continue;
+
+                allowedValues = removeElementFromArray(allowedValues, this.cells[x][y].number);
+            }
+        }
+
+        return allowedValues;
+    }
+
     getCellValue(cell) {
         return this.cells[cell.x][cell.y].number;
+    }
+
+    getStyle(number) {
+        const gradientColors = number !== null ? this.styles[number].colors : [];
+        const gradientHTML = `linear-gradient(135deg${generateHtmlGradient(gradientColors)})`;
+        const textColor = number !== null ? this.styles[number].textColor : '#fff';
+
+        return {bg: gradientHTML, fg: textColor};
     }
 
     shuffle() {
@@ -200,13 +253,12 @@ class Board {
     updateCells(activeCell) {
         const activeValue = this.getCellValue(activeCell);
 
-        const gradientColors = activeValue !== null ? this.styles[activeValue].colors : [];
-        const gradientHTML = `linear-gradient(135deg${generateHtmlGradient(gradientColors)})`;
+        const {bg: gradientHTML, fg: textColor} = this.getStyle(activeValue);
 
         for(let x = 0; x < this.size; x++) {
             for(let y = 0; y < this.size; y++) {
                 const isActive = activeValue !== null && this.cells[x][y].number === activeValue;
-                this.cells[x][y].setActive(isActive, gradientHTML);
+                this.cells[x][y].setActive(isActive, gradientHTML, textColor);
             }
         }
     }
@@ -225,4 +277,11 @@ function generateHtmlGradient(colors) {
 
 function ranInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
+}
+
+function removeElementFromArray(array, element) {
+    const index = array.indexOf(element);
+    if(index !== -1)
+        array.splice(index, 1);
+    return array;
 }

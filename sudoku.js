@@ -7,6 +7,8 @@ class Sudoku {
         this.cellSize = (window.innerWidth - 27) / 9;
 
         this.cursor = new Cursor(this.cellSize);
+
+        this.input = new InputButtons(9, this);
     }
 
     init() {
@@ -72,6 +74,7 @@ class Sudoku {
     setActiveCell(pos) {
         this.cursor.setPosition(pos.x, pos.y);
         this.board.updateCells(pos);
+        this.input.setAllowedInputs(this.board.getAllowedValues(pos));
     }
 
     windowResizeEvent() {
